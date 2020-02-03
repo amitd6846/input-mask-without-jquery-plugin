@@ -2,7 +2,7 @@ $(document).ready(function() {
     // var plceHoldr = ['−', '−', '−', '−', '−', '−', '−', '−', '−', '−'];
     var newTEST;
     $('#input_box').on('keypress', function(e) {
-        this.value = this.value.replace(/[^0-9]/g, '');
+      //  this.value = this.value.replace(/[^0-9]/g, '');
         var newPos = doGetCaretPosition(this);
 
         var get_newBg = $('#newBg').val();
