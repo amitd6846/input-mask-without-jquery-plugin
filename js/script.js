@@ -1,8 +1,8 @@
-$(document).ready(function () {
+$(document).ready(function() {
     var newTEST;
     var fired = false;
 
-    $("#input_box").keydown(function (e) {
+    $("#input_box").keydown(function(e) {
         this.value = this.value.replace(/[^0-9]/g, '');
         var newPos = doGetCaretPosition(this);
         var value = String.fromCharCode(e.keyCode);
@@ -11,30 +11,30 @@ $(document).ready(function () {
         } else if (e.keyCode == 8) { // 8 is the keyCode for backspace
             e.preventDefault();
         }
-        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
-            // Allow: Ctrl+A
-            (e.keyCode == 65 && e.ctrlKey === true) ||
-            // Allow: home, end, left, right
-            (e.keyCode >= 35 && e.keyCode <= 39)) {
-            // let it happen, don't do anything
-            return;
-        }
+        // if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+        // Allow: Ctrl+A
+        // (e.keyCode == 65 && e.ctrlKey === true) ||
+        // Allow: home, end, left, right
+        // (e.keyCode >= 35 && e.keyCode <= 39)) {
+        // let it happen, don't do anything
+        // return;
+        // }
         // Ensure that it is a number and stop the keypress
-        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-            e.preventDefault();
-        }
-        if (value < 5 && newPos == 0) {
-            this.value = this.value.replace(/[^0-9]/g, '');
-            console.log(value);
-            e.preventDefault();
-        }
+        // if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+        // e.preventDefault();
+        // }
+        // if (value < 5 && newPos == 0) {
+        // this.value = this.value.replace(/[^0-9]/g, '');
+        // console.log(value);
+        // e.preventDefault();
+        // }
     });
 
-    $("#input_box").keyup(function () {
+    $("#input_box").keyup(function() {
         fired = false;
     });
 
-    $("#input_box").keyup(function (e) {
+    $("#input_box").keyup(function(e) {
         var newPos = doGetCaretPosition(this);
 
 
@@ -47,7 +47,7 @@ $(document).ready(function () {
         }
     });
 
-    $('#input_box').on('keypress', function (e) {
+    $('#input_box').on('keypress', function(e) {
         var newPos = doGetCaretPosition(this);
         var get_newBg = $('#newBg').val();
 
@@ -66,7 +66,7 @@ $(document).ready(function () {
         }
     });
 
-    String.prototype.replaceAt = function (index, replacement) {
+    String.prototype.replaceAt = function(index, replacement) {
         return this.substr(0, index) + replacement + this.substr(index + replacement.length);
     }
 
