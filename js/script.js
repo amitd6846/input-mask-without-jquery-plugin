@@ -24,6 +24,7 @@ $(document).ready(function () {
             e.preventDefault();
         }
         if (value < 5 && newPos == 0) {
+            this.value = this.value.replace(/[^0-9]/g, '');
             console.log(value);
             e.preventDefault();
         }
