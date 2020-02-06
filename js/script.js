@@ -12,11 +12,8 @@ $(document).ready(function () {
         }
     });
 
-    $("#input_box").keyup(function () {
-        fired = false;
-    });
-
     $("#input_box").keyup(function (e) {
+        fired = false;
         var newPos = doGetCaretPosition(this);
 
         if (e.keyCode == 8 || e.keyCode == 46) {
@@ -24,7 +21,7 @@ $(document).ready(function () {
             newTEST = get_newBg.replaceAt(newPos, '−');
             $('#newBg').val(newTEST);
             $(this).val(newTEST);
-            console.log("inback" + newTEST);
+            // console.log("inback" + newTEST);
             setCaretToPos(document.getElementById("input_box"), newPos);
         }
     });
@@ -32,19 +29,21 @@ $(document).ready(function () {
     $('#input_box').on('keypress', function (e) {
         var newPos = doGetCaretPosition(this);
         var get_newBg = $('#newBg').val();
-        console.log(e.which);
+        // console.log(e.which);
+
         var valid = (e.which >= 48 && e.which <= 57);
         if (!valid) {
             e.preventDefault();
         } else {
             if ($(this).val().length < 10) {
+                validatenumber(e);
                 if ((e.which >= 49 && e.which <= 52) && newPos == 0) {
                     e.preventDefault();
                 } else {
                     var this_val = $(this).val();
                     newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode));
                     $('#newBg').val(newTEST);
-                    console.log("inkeypressval" + newTEST);
+                    // console.log("inkeypressval" + newTEST);
                 }
             } else {
                 if (newPos < 10) {
@@ -54,7 +53,7 @@ $(document).ready(function () {
                         newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode));
                         $(this).val(newTEST);
                         $('#newBg').val(newTEST);
-                        console.log("incursor" + newTEST);
+                        // console.log("incursor" + newTEST);
                         setCaretToPos(document.getElementById("input_box"), newPos + 1);
                     }
                 }
@@ -129,3 +128,15 @@ $(document).ready(function () {
     }
 
 });
+
+function validatenumber(evt) {
+    var theEvent = evt || window.event;
+    var key = theEvent.keyCode || theEvent.which;
+    key = String.fromCharCode(key);
+    console.log(key);
+    var regex = /^[0-9\b]+$/; // allow only numbers [0-9] 
+    if (!regex.test(key)) {
+        theEvent.returnValue = false;
+        if (theEvent.preventDefault) theEvent.preventDefault();
+    }
+}
