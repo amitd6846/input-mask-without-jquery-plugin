@@ -33,10 +33,10 @@ $(document).ready(function () {
 
         var valid = ((e.which >= 48 && e.which <= 57) || (e.which >= 96 && e.which <= 105));
         if (!valid) {
-            e.preventDefault();
+            return false;
         } else {
             if ($(this).val().length < 10) {
-                if ((e.which >= 49 && e.which <= 52) && newPos == 0) {
+                if (((e.which >= 49 && e.which <= 52) || (e.which >= 97 && e.which <= 100)) && newPos == 0) {
                     e.preventDefault();
                 } else {
                     var this_val = $(this).val();
