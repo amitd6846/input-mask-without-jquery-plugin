@@ -1,8 +1,7 @@
-$(document).ready(function () {
+$(document).ready(function() {
     var newTEST;
     var fired = false;
-
-    $("#input_box").keydown(function (e) {
+    $("#input_box").keydown(function(e) {
         var newPos = doGetCaretPosition(this);
         var value = String.fromCharCode(e.keyCode);
         if (!fired) {
@@ -11,27 +10,37 @@ $(document).ready(function () {
             e.preventDefault();
         }
     });
-
-    $("#input_box").keyup(function (e) {
+    // $("#input_box").inputFilter(function(value) {
+    //     return /^\d*$/.test(value); // Allow digits only, using a RegExp
+    // });
+    var count = 0;
+    $("#input_box").keyup(function(e) {
         fired = false;
         var newPos = doGetCaretPosition(this);
 
         if (e.keyCode == 8 || e.keyCode == 46) {
+
             var get_newBg = $('#newBg').val();
             newTEST = get_newBg.replaceAt(newPos, '−');
             $('#newBg').val(newTEST);
             $(this).val(newTEST);
             // console.log("inback" + newTEST);
             setCaretToPos(document.getElementById("input_box"), newPos);
+            if ($(this).val() == '−−−−−−−−−−') {
+                $(this).val('');
+            } else {
+                // console.log('no');
+            }
+
         }
     });
 
-    $('#input_box').on('keypress', function (e) {
+    $('#input_box').on('keypress', function(e) {
         var newPos = doGetCaretPosition(this);
         var get_newBg = $('#newBg').val();
         console.log(e.which);
-
-        var valid = ((e.which >= 48 && e.which <= 57) || (e.which >= 96 && e.which <= 105));
+        var valid = (e.which >= 48 && e.which <= 57);
+        // var valid = ((e.which >= 48 && e.which <= 57) || (e.which >= 96 && e.which <= 105));
         if (!valid) {
             return false;
         } else {
@@ -60,12 +69,17 @@ $(document).ready(function () {
 
         }
     });
-
-    $('#input_box').on("cut copy paste", function (e) {
+    $('#input_box').on('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    })
+    $('#newBg').on('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    })
+    $('#input_box').on("cut copy paste", function(e) {
         e.preventDefault();
     });
 
-    String.prototype.replaceAt = function (index, replacement) {
+    String.prototype.replaceAt = function(index, replacement) {
         return this.substr(0, index) + replacement + this.substr(index + replacement.length);
     }
 
