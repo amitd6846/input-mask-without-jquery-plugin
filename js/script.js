@@ -37,16 +37,20 @@ $(document).ready(function () {
         if (!valid) {
             e.preventDefault();
         } else {
-            if ((e.which >= 49 && e.which <= 52) && newPos == 0) {
-                e.preventDefault();
-            } else {
-                if ($(this).val().length < 10) {
+            if ($(this).val().length < 10) {
+                if ((e.which >= 49 && e.which <= 52) && newPos == 0) {
+                    e.preventDefault();
+                } else {
                     var this_val = $(this).val();
                     newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode));
                     $('#newBg').val(newTEST);
                     console.log("inkeypressval" + newTEST);
-                } else {
-                    if (newPos < 10) {
+                }
+            } else {
+                if (newPos < 10) {
+                    if ((e.which >= 49 && e.which <= 52) && newPos == 0) {
+                        e.preventDefault();
+                    } else {
                         newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode));
                         $(this).val(newTEST);
                         $('#newBg').val(newTEST);
@@ -55,6 +59,7 @@ $(document).ready(function () {
                     }
                 }
             }
+
         }
     });
 
