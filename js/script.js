@@ -24,6 +24,7 @@ $(document).ready(function () {
             newTEST = get_newBg.replaceAt(newPos, '−');
             $('#newBg').val(newTEST);
             $(this).val(newTEST);
+            console.log("inback" + newTEST);
             setCaretToPos(document.getElementById("input_box"), newPos);
         }
     });
@@ -43,12 +44,13 @@ $(document).ready(function () {
                     var this_val = $(this).val();
                     newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode));
                     $('#newBg').val(newTEST);
+                    console.log("inkeypressval" + newTEST);
                 } else {
                     if (newPos < 10) {
                         newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode));
                         $(this).val(newTEST);
                         $('#newBg').val(newTEST);
-
+                        console.log("incursor" + newTEST);
                         setCaretToPos(document.getElementById("input_box"), newPos + 1);
                     }
                 }
