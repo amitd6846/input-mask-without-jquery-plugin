@@ -36,7 +36,6 @@ $(document).ready(function () {
             e.preventDefault();
         } else {
             if ($(this).val().length < 10) {
-                validatenumber(e);
                 if ((e.which >= 49 && e.which <= 52) && newPos == 0) {
                     e.preventDefault();
                 } else {
