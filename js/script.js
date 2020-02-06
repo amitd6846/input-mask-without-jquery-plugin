@@ -29,9 +29,9 @@ $(document).ready(function () {
     $('#input_box').on('keypress', function (e) {
         var newPos = doGetCaretPosition(this);
         var get_newBg = $('#newBg').val();
-        // console.log(e.which);
+        console.log(e.which);
 
-        var valid = (e.which >= 48 && e.which <= 57);
+        var valid = ((e.which >= 48 && e.which <= 57) || (e.which >= 96 && e.which <= 105));
         if (!valid) {
             e.preventDefault();
         } else {
@@ -128,15 +128,3 @@ $(document).ready(function () {
     }
 
 });
-
-function validatenumber(evt) {
-    var theEvent = evt || window.event;
-    var key = theEvent.keyCode || theEvent.which;
-    key = String.fromCharCode(key);
-    console.log(key);
-    var regex = /^[0-9\b]+$/; // allow only numbers [0-9] 
-    if (!regex.test(key)) {
-        theEvent.returnValue = false;
-        if (theEvent.preventDefault) theEvent.preventDefault();
-    }
-}
