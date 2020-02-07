@@ -1,7 +1,52 @@
 $(document).ready(function () {
     var newTEST;
     var fired = false;
+    var f = true;
+    $("#input_box").on("keypress", function (e) {
+        var newPos = doGetCaretPosition(this);
+        var get_newBg = $('#newBg').val();
+
+        var valid = (e.which >= 48 && e.which <= 57);
+        // var valid = ((e.which >= 48 && e.which <= 57) || (e.which >= 96 && e.which <= 105));
+        if (!valid && f == true) {
+            return false;
+        } else {
+            if ($(this).val().length < 10) {
+                if (((e.which >= 49 && e.which <= 52) || (e.which >= 97 && e.which <= 100)) && newPos == 0) {
+                    e.preventDefault();
+                } else {
+                    var this_val = $(this).val();
+                    newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode));
+                    $('#newBg').val(newTEST);
+                    // console.log("inkeypressval" + newTEST);
+                }
+            } else {
+                if (newPos < 10) {
+                    if ((e.which >= 49 && e.which <= 52) && newPos == 0) {
+                        e.preventDefault();
+                    } else {
+                        newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode));
+                        $(this).val(newTEST);
+                        $('#newBg').val(newTEST);
+                        // console.log("incursor" + newTEST);
+                        setCaretToPos(document.getElementById("input_box"), newPos + 1);
+                    }
+                }
+            }
+
+        }
+    });
+
     $("#input_box").keydown(function (e) {
+        var newPos = doGetCaretPosition(this);
+        var value = String.fromCharCode(e.keyCode);
+        if (!value < 10) {
+            console.log("value" + value);
+            f = false;
+        } else {
+            f = true;
+        }
+
         if (!fired) {
             fired = true;
         } else if (e.keyCode == 8) { // 8 is the keyCode for backspace
@@ -12,67 +57,21 @@ $(document).ready(function () {
     $("#input_box").keyup(function (e) {
         fired = false;
         var newPos = doGetCaretPosition(this);
+
         if (e.keyCode == 8 || e.keyCode == 46) {
             var get_newBg = $('#newBg').val();
-            newTEST = get_newBg.replaceAtFirst(newPos, '−');
+            newTEST = get_newBg.replaceAt(newPos, '−');
             $('#newBg').val(newTEST);
             $(this).val(newTEST);
+            // console.log("inback" + newTEST);
             setCaretToPos(document.getElementById("input_box"), newPos);
         }
     });
 
-    $('#input_box').on("keypress", function (e) {
-        var newPos = doGetCaretPosition(this);
-        var get_newBg = $('#newBg').val();
-        var valid = (e.which >= 48 && e.which <= 57);
-        var code = String.fromCharCode(e.keyCode);
-        //alert(typeof (code));
-
-        if (typeof (code) != Number) {
-            e.preventDefault();
-        } else {
-            if ($(this).val().length < 10) {
-                if ((e.which >= 49 && e.which <= 52) && newPos == 0) {
-                    e.preventDefault();
-                } else {
-                    var this_val = $(this).val();
-                    newTEST = get_newBg.replaceAtFirst(newPos, String.fromCharCode(e.keyCode));
-                    console.log(newTEST);
-                    var i = 0;
-                    if (newTEST == 1) {
-
-                    } else {
-                        $('#newBg').val(newTEST);
-                    }
-                }
-            } else {
-                if (newPos < 10) {
-                    if ((e.which >= 49 && e.which <= 52) && newPos == 0) {
-                        e.preventDefault();
-                    } else {
-                        newTEST = get_newBg.replaceAtFirst(newPos, String.fromCharCode(e.keyCode));
-                        if (newTEST == 1) {
-                            alert("hi");
-                        } else {
-                            $(this).val(newTEST);
-                            $('#newBg').val(newTEST);
-                            setCaretToPos(document.getElementById("input_box"), newPos + 1);
-                        }
-                    }
-                }
-            }
-
-        }
-    });
-
-
-    $('#input_box').on("cut copy paste", function (e) {
-        e.preventDefault();
-    });
-
-    String.prototype.replaceAtFirst = function (index, replacement) {
+    String.prototype.replaceAt = function (index, replacement) {
         return this.substr(0, index) + replacement + this.substr(index + replacement.length);
     }
+
 
     function setSelectionRange(input, selectionStart, selectionEnd) {
         if (input.setSelectionRange) {
