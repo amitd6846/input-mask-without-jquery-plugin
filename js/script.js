@@ -37,7 +37,6 @@ $(document).ready(function () {
                 if ((e.which >= 49 && e.which <= 52) && newPos == 0) {
                     e.preventDefault();
                 } else {
-                    $('#input_box').off('input', function () {});
                     var this_val = $(this).val();
                     newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode));
                     $('#newBg').val(newTEST);
@@ -67,7 +66,7 @@ $(document).ready(function () {
 
     String.prototype.replaceAt = function (index, replacement) {
         var reg = /[^0-9]/g;
-        if (replacement.match(reg) && replacement == "" && replacement == undefined && replacement == null) {
+        if (replacement.match(reg) || replacement == "" || replacement == undefined || replacement == null) {
             return this.substr(0, index) + '−' + this.substr(index + replacement.length);
         } else {
             return this.substr(0, index) + replacement + this.substr(index + replacement.length);
