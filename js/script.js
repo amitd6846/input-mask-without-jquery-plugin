@@ -69,7 +69,7 @@ $(document).ready(function () {
     String.prototype.replaceAt = function (index, replacement, val) {
         var reg = /^[01234]+/gi;
         if (val.match(reg)) {
-            return false;
+            this.value = this.value.replace(reg, '');
         } else {
             return this.substr(0, index) + replacement + this.substr(index + replacement.length);
         }
