@@ -27,36 +27,36 @@ $(document).ready(function () {
         var newPos = doGetCaretPosition(this);
         var get_newBg = $('#newBg').val();
         var valid = (e.which >= 48 && e.which <= 57);
-        if (!valid) {
-            return false;
+        // if (!valid) {
+        //     return false;
+        // } else {
+        if ($(this).val().length < 10) {
+            // if ((e.which >= 49 && e.which <= 52) && newPos == 0) {
+            //     e.preventDefault();
+            // } else {
+            var this_val = $(this).val();
+            newTEST = get_newBg.replaceAtFirst(newPos, String.fromCharCode(e.keyCode));
+            //console.log(newTEST);
+            if (newTEST == 1) {
+                e.preventDefault();
+            } else {
+                $('#newBg').val(newTEST);
+            }
+            //}
         } else {
-            if ($(this).val().length < 10) {
-                if ((e.which >= 49 && e.which <= 52) && newPos == 0) {
+            if (newPos < 10) {
+                // if ((e.which >= 49 && e.which <= 52) && newPos == 0) {
+                //     e.preventDefault();
+                // } else {
+                newTEST = get_newBg.replaceAtFirst(newPos, String.fromCharCode(e.keyCode));
+                if (newTEST == 1) {
                     e.preventDefault();
                 } else {
-                    var this_val = $(this).val();
-                    newTEST = get_newBg.replaceAtFirst(newPos, String.fromCharCode(e.keyCode));
-                    //console.log(newTEST);
-                    if (newTEST == 1) {
-                        e.preventDefault();
-                    } else {
-                        $('#newBg').val(newTEST);
-                    }
-                }
-            } else {
-                if (newPos < 10) {
-                    if ((e.which >= 49 && e.which <= 52) && newPos == 0) {
-                        e.preventDefault();
-                    } else {
-                        newTEST = get_newBg.replaceAtFirst(newPos, String.fromCharCode(e.keyCode));
-                        if (newTEST == 1) {
-                            e.preventDefault();
-                        } else {
-                            $(this).val(newTEST);
-                            $('#newBg').val(newTEST);
-                            setCaretToPos(document.getElementById("input_box"), newPos + 1);
-                        }
-                    }
+                    $(this).val(newTEST);
+                    $('#newBg').val(newTEST);
+                    setCaretToPos(document.getElementById("input_box"), newPos + 1);
+                    //     }
+                    // }
                 }
             }
 
