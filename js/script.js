@@ -28,9 +28,8 @@ $(document).ready(function () {
         var code = String.fromCharCode(e.keyCode);
         //alert(typeof (code));
 
-        if (!valid && typeof (code) != Number) {
+        if (typeof (code) != Number) {
             e.preventDefault();
-            return false;
         } else {
             if ($(this).val().length < 10) {
                 if ((e.which >= 49 && e.which <= 52) && newPos == 0) {
