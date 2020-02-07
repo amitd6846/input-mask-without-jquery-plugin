@@ -1,14 +1,14 @@
 $(document).ready(function () {
     var newTEST;
     var fired = false;
-    var f = true;
+    var f;
     $("#input_box").on("keypress", function (e) {
         var newPos = doGetCaretPosition(this);
         var get_newBg = $('#newBg').val();
 
         var valid = (e.which >= 48 && e.which <= 57);
         // var valid = ((e.which >= 48 && e.which <= 57) || (e.which >= 96 && e.which <= 105));
-        if (!valid && f == true) {
+        if (!valid && f == false) {
             return false;
         } else {
             if ($(this).val().length < 10) {
@@ -40,7 +40,7 @@ $(document).ready(function () {
     $("#input_box").keydown(function (e) {
         var newPos = doGetCaretPosition(this);
         var value = String.fromCharCode(e.keyCode);
-        if (!value < 10) {
+        if (value.match(/[_\W0-9]/)) {
             console.log("value" + value);
             f = false;
         } else {
