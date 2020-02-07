@@ -16,13 +16,11 @@ $(document).ready(function () {
         var newPos = doGetCaretPosition(this);
         if (e.keyCode == 8 || e.keyCode == 46) {
             var get_newBg = $('#newBg').val();
-            newTEST = get_newBg.replaceAt(newPos, '−');
+            newTEST = get_newBg.replaceAt(newPos, '−', this.value);
             $('#newBg').val(newTEST);
             $(this).val(newTEST);
             console.log("inback" + newPos);
             setCaretToPos(document.getElementById("input_box"), newPos);
-        } else {
-            this.value = this.value.replace(/[^0-9]/g, '');
         }
     });
 
@@ -35,11 +33,12 @@ $(document).ready(function () {
             return false;
         } else {
             if ($(this).val().length < 10) {
-                if (((e.which >= 49 && e.which <= 52) || (e.which >= 97 && e.which <= 100)) && newPos == 0) {
+                if ((e.which >= 49 && e.which <= 52) && newPos == 0) {
                     e.preventDefault();
                 } else {
+                    $('#input_box').off('input', function () {});
                     var this_val = $(this).val();
-                    newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode));
+                    newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode), this.value);
                     $('#newBg').val(newTEST);
                     // console.log("inkeypressval" + newTEST);
                 }
@@ -48,7 +47,7 @@ $(document).ready(function () {
                     if ((e.which >= 49 && e.which <= 52) && newPos == 0) {
                         e.preventDefault();
                     } else {
-                        newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode));
+                        newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode), this.value);
                         $(this).val(newTEST);
                         $('#newBg').val(newTEST);
                         // console.log("incursor" + newTEST);
@@ -59,9 +58,7 @@ $(document).ready(function () {
 
         }
     });
-    // $('#input_box').on('input', function () {
-    //     this.value = this.value.replace(/[^0-9]/g, '');
-    // });
+
     // $('#newBg').on('input', function () {
     //     this.value = this.value.replace(/[^0-9]/g, '');
     // });
@@ -69,8 +66,13 @@ $(document).ready(function () {
         e.preventDefault();
     });
 
-    String.prototype.replaceAt = function (index, replacement) {
-        return this.substr(0, index) + replacement + this.substr(index + replacement.length);
+    String.prototype.replaceAt = function (index, replacement, val) {
+        var reg = /^[01234]+/gi;
+        if (val.match(reg)) {
+            return false;
+        } else {
+            return this.substr(0, index) + replacement + this.substr(index + replacement.length);
+        }
     }
 
     function setSelectionRange(input, selectionStart, selectionEnd) {
