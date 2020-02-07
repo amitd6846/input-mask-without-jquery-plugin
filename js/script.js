@@ -13,14 +13,12 @@ $(document).ready(function () {
 
     $("#input_box").keyup(function (e) {
         fired = false;
-        console.log(String.fromCharCode(e.keyCode));
         var newPos = doGetCaretPosition(this);
         if (e.keyCode == 8 || e.keyCode == 46) {
             var get_newBg = $('#newBg').val();
             newTEST = get_newBg.replaceAtNew(newPos, '−');
             $('#newBg').val(newTEST);
             $(this).val(newTEST);
-            console.log("inback" + newPos);
             setCaretToPos(document.getElementById("input_box"), newPos);
         }
     });
@@ -28,7 +26,6 @@ $(document).ready(function () {
     $('#input_box').on('keypress', function (e) {
         var newPos = doGetCaretPosition(this);
         var get_newBg = $('#newBg').val();
-        console.log(e.which);
         var valid = (e.which >= 48 && e.which <= 57);
         if (!valid) {
             return false;
@@ -38,20 +35,27 @@ $(document).ready(function () {
                     e.preventDefault();
                 } else {
                     var this_val = $(this).val();
-                    newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode));
-                    $('#newBg').val(newTEST);
-                    // console.log("inkeypressval" + newTEST);
+                    newTEST = get_newBg.replaceAtFirst(newPos, String.fromCharCode(e.keyCode));
+                    //console.log(newTEST);
+                    if (newTEST == 1) {
+                        e.preventDefault();
+                    } else {
+                        $('#newBg').val(newTEST);
+                    }
                 }
             } else {
                 if (newPos < 10) {
                     if ((e.which >= 49 && e.which <= 52) && newPos == 0) {
                         e.preventDefault();
                     } else {
-                        newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode));
-                        $(this).val(newTEST);
-                        $('#newBg').val(newTEST);
-                        // console.log("incursor" + newTEST);
-                        setCaretToPos(document.getElementById("input_box"), newPos + 1);
+                        newTEST = get_newBg.replaceAtFirst(newPos, String.fromCharCode(e.keyCode));
+                        if (newTEST == 1) {
+                            e.preventDefault();
+                        } else {
+                            $(this).val(newTEST);
+                            $('#newBg').val(newTEST);
+                            setCaretToPos(document.getElementById("input_box"), newPos + 1);
+                        }
                     }
                 }
             }
@@ -64,14 +68,24 @@ $(document).ready(function () {
         e.preventDefault();
     });
 
-    String.prototype.replaceAt = function (index, replacement) {
+    String.prototype.replaceAtFirst = function (index, replacement) {
         var reg = /[^0-9]/g;
-        if (replacement.match(reg) || replacement == "" || replacement == undefined || replacement == null) {
-            return this.substr(0, index) + '−' + this.substr(index + replacement.length);
+        var cont = 1;
+        if (replacement.match(reg)) {
+            return cont;
         } else {
             return this.substr(0, index) + replacement + this.substr(index + replacement.length);
         }
     }
+
+    // String.prototype.replaceAt = function (index, replacement) {
+    //     var reg = /[^0-9]/g;
+    //     if (replacement.match(reg)) {
+    //         return this.substr(0, index) + '−' + this.substr(index + replacement.length);
+    //     } else {
+    //         return this.substr(0, index) + replacement + this.substr(index + replacement.length);
+    //     }
+    // }
 
     String.prototype.replaceAtNew = function (index, replacement) {
         return this.substr(0, index) + replacement + this.substr(index + replacement.length);
