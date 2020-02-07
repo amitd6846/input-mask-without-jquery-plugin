@@ -1,85 +1,74 @@
-$(document).ready(function() {
+$(document).ready(function () {
     var newTEST;
     var fired = false;
-    $("#input_box").keydown(function(e) {
+
+    $("#input_box").keydown(function (event) {
         var newPos = doGetCaretPosition(this);
-        var value = String.fromCharCode(e.keyCode);
+        var value = String.fromCharCode(event.keyCode);
         if (!fired) {
             fired = true;
-        } else if (e.keyCode == 8) { // 8 is the keyCode for backspace
-            e.preventDefault();
+        } else if (event.keyCode == 8) { // 8 is the keyCode for backspace
+            event.preventDefault();
+        }
+        if (event.shiftKey && ((event.keyCode >= 48 && event.keyCode <= 57) ||
+                (event.keyCode >= 186 && event.keyCode <= 222))) {
+            // Ensure that it is a number and stop the Special chars
+            event.preventDefault();
+        } else if ((event.shiftKey || event.ctrlKey) && (event.keyCode > 34 && event.keyCode < 40)) {
+            // let it happen, don't do anything
+        } else {
+            // Allow only backspace , delete, numbers               
+            if (event.keyCode == 9 || event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 39 || event.keyCode == 37 ||
+                (event.keyCode >= 48 && event.keyCode <= 57)) {
+                // let it happen, don't do anything
+            } else {
+                // Ensure that it is a number and stop the key press
+                event.preventDefault();
+            }
         }
     });
-    // $("#input_box").inputFilter(function(value) {
-    //     return /^\d*$/.test(value); // Allow digits only, using a RegExp
-    // });
-    var count = 0;
-    $("#input_box").keyup(function(e) {
+
+    $("#input_box").keyup(function (e) {
         fired = false;
         var newPos = doGetCaretPosition(this);
 
         if (e.keyCode == 8 || e.keyCode == 46) {
-
             var get_newBg = $('#newBg').val();
             newTEST = get_newBg.replaceAt(newPos, '−');
             $('#newBg').val(newTEST);
             $(this).val(newTEST);
             // console.log("inback" + newTEST);
             setCaretToPos(document.getElementById("input_box"), newPos);
-            if ($(this).val() == '−−−−−−−−−−') {
-                $(this).val('');
-            } else {
-                // console.log('no');
-            }
-
         }
     });
 
-    $('#input_box').on('keypress', function(e) {
+    $('#input_box').on('keypress', function (e) {
         var newPos = doGetCaretPosition(this);
         var get_newBg = $('#newBg').val();
-        console.log(e.which);
-        var valid = (e.which >= 48 && e.which <= 57);
-        // var valid = ((e.which >= 48 && e.which <= 57) || (e.which >= 96 && e.which <= 105));
-        if (!valid) {
-            return false;
+        if ($(this).val().length < 10) {
+            var this_val = $(this).val();
+            newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode));
+            $('#newBg').val(newTEST);
+            // console.log("inkeypressval" + newTEST);
         } else {
-            if ($(this).val().length < 10) {
-                if (((e.which >= 49 && e.which <= 52) || (e.which >= 97 && e.which <= 100)) && newPos == 0) {
-                    e.preventDefault();
-                } else {
-                    var this_val = $(this).val();
+            if (newPos < 10) {
+                {
                     newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode));
+                    $(this).val(newTEST);
                     $('#newBg').val(newTEST);
-                    // console.log("inkeypressval" + newTEST);
-                }
-            } else {
-                if (newPos < 10) {
-                    if ((e.which >= 49 && e.which <= 52) && newPos == 0) {
-                        e.preventDefault();
-                    } else {
-                        newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode));
-                        $(this).val(newTEST);
-                        $('#newBg').val(newTEST);
-                        // console.log("incursor" + newTEST);
-                        setCaretToPos(document.getElementById("input_box"), newPos + 1);
-                    }
+                    // console.log("incursor" + newTEST);
+                    setCaretToPos(document.getElementById("input_box"), newPos + 1);
                 }
             }
-
         }
+
     });
-    $('#input_box').on('input', function() {
-        this.value = this.value.replace(/[^0-9]/g, '');
-    })
-    $('#newBg').on('input', function() {
-        this.value = this.value.replace(/[^0-9]/g, '');
-    })
-    $('#input_box').on("cut copy paste", function(e) {
+
+    $('#input_box').on("cut copy paste", function (e) {
         e.preventDefault();
     });
 
-    String.prototype.replaceAt = function(index, replacement) {
+    String.prototype.replaceAt = function (index, replacement) {
         return this.substr(0, index) + replacement + this.substr(index + replacement.length);
     }
 
