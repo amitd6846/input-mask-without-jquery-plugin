@@ -13,10 +13,11 @@ $(document).ready(function () {
 
     $("#input_box").keyup(function (e) {
         fired = false;
+        console.log(String.fromCharCode(e.keyCode));
         var newPos = doGetCaretPosition(this);
         if (e.keyCode == 8 || e.keyCode == 46) {
             var get_newBg = $('#newBg').val();
-            newTEST = get_newBg.replaceAt(newPos, '−', this.value);
+            newTEST = get_newBg.replaceAtNew(newPos, '−');
             $('#newBg').val(newTEST);
             $(this).val(newTEST);
             console.log("inback" + newPos);
@@ -38,7 +39,7 @@ $(document).ready(function () {
                 } else {
                     $('#input_box').off('input', function () {});
                     var this_val = $(this).val();
-                    newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode), this.value);
+                    newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode), String.fromCharCode(e.keyCode));
                     $('#newBg').val(newTEST);
                     // console.log("inkeypressval" + newTEST);
                 }
@@ -47,7 +48,7 @@ $(document).ready(function () {
                     if ((e.which >= 49 && e.which <= 52) && newPos == 0) {
                         e.preventDefault();
                     } else {
-                        newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode), this.value);
+                        newTEST = get_newBg.replaceAt(newPos, String.fromCharCode(e.keyCode), String.fromCharCode(e.keyCode));
                         $(this).val(newTEST);
                         $('#newBg').val(newTEST);
                         // console.log("incursor" + newTEST);
@@ -59,20 +60,22 @@ $(document).ready(function () {
         }
     });
 
-    // $('#newBg').on('input', function () {
-    //     this.value = this.value.replace(/[^0-9]/g, '');
-    // });
+
     $('#input_box').on("cut copy paste", function (e) {
         e.preventDefault();
     });
 
     String.prototype.replaceAt = function (index, replacement, val) {
-        var reg = /^[01234]+/gi;
+        var reg = /[^0-9]/g;
         if (val.match(reg)) {
-            this.value = this.value.replace(reg, '');
+            return false;
         } else {
             return this.substr(0, index) + replacement + this.substr(index + replacement.length);
         }
+    }
+
+    String.prototype.replaceAtNew = function (index, replacement) {
+        return this.substr(0, index) + replacement + this.substr(index + replacement.length);
     }
 
     function setSelectionRange(input, selectionStart, selectionEnd) {
